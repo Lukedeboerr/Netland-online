@@ -1,5 +1,5 @@
 <?php
-include_once('connection.php');//connection to database
+include_once('Database/connection.php'); // Verbinding maken met de database
 
 if (isset($_POST["title"])) {
     $title = $_POST["title"];
@@ -10,16 +10,24 @@ if (isset($_POST["title"])) {
     $rating = $_POST["rating"];
     $description = $_POST["description"];
 
-//Start of sql statement to be able to insert new serie
+    // Start van de SQL-query met prepared statement om een nieuwe serie toe te voegen
 
     try {
-        $stmt = $conn->query("INSERT INTO series (title, has_won_awards, seasons, country, language, rating, description)
-    VALUES ('$title', '$has_won_awards', '$seasons', '$country', '$language', '$rating', '$description')");//Inserting put in values in to database
+        $stmt = $conn->prepare("INSERT INTO series (title, has_won_awards, seasons, country, language, rating, description) VALUES (:title, :has_won_awards, :seasons, :country, :language, :rating, :description)");
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':has_won_awards', $has_won_awards);
+        $stmt->bindParam(':seasons', $seasons);
+        $stmt->bindParam(':country', $country);
+        $stmt->bindParam(':language', $language);
+        $stmt->bindParam(':rating', $rating);
+        $stmt->bindParam(':description', $description);
+
+        $stmt->execute(); // Uitvoeren van het prepared statement
     } catch (PDOException $e) {
-        echo "Inserting records failed" . $e->getMessage();//If there was a error
+        echo "Het toevoegen van gegevens is mislukt: " . $e->getMessage(); // Als er een fout optreedt
     }
 
-//End of sql statement
+    // Einde van de SQL-query
 
 }
 ?>
@@ -39,8 +47,8 @@ if (isset($_POST["title"])) {
 <header>
         <nav>
             <div class="logo-container">
-                <img src="Netland.jpg" class="logo">
-                <labal class="logo-txt">Netland</labal>
+                <img src="Pictures/Netland.jpg" class="logo">
+                <labal class="logo-txt"></labal>
             </div>
             <input type="checkbox" id="check">
             <label for="check" class="hamburger-btn">

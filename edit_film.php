@@ -1,5 +1,6 @@
 <?php
-include_once('connection.php'); 
+include_once('Database/connection.php'); 
+
 $id = $_GET['id'] ?? $_POST['id'];
 if (!isset($_GET['id'])) {
     $id2 = $_POST['id'] - 1;
@@ -7,7 +8,7 @@ if (!isset($_GET['id'])) {
     $id2 = $_GET['id'] - 1;
 }
 
-//This php code is to get the id for later in the code
+// Deze PHP-code is om de ID op te halen voor later in de code
 
 if (isset($_POST["id"])) {
     $titel = $_POST["titel"];
@@ -17,19 +18,25 @@ if (isset($_POST["id"])) {
     $land = $_POST["land"];
     try {
         $sql = "UPDATE films SET
-        titel='$titel',
-        duur='$duur',
-        description='$description',
-        datum='$datum',
-        land='$land'
-        WHERE id=$id";
+        titel=:titel,
+        duur=:duur,
+        description=:description,
+        datum=:datum,
+        land=:land
+        WHERE id=:id";
         $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':titel', $titel);
+        $stmt->bindParam(':duur', $duur);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':datum', $datum);
+        $stmt->bindParam(':land', $land);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
 
-//This php code will make it possible to update the values directly to the database with the website
+    // Deze PHP-code maakt het mogelijk om de waarden rechtstreeks bij te werken naar de database via de website
 
 }
 ?>
@@ -49,8 +56,8 @@ if (isset($_POST["id"])) {
 <header>
         <nav>
             <div class="logo-container">
-                <img src="Netland.jpg" class="logo">
-                <labal class="logo-txt">Netland</labal>
+                <img src="Pictures/Netland.jpg" class="logo">
+                <labal class="logo-txt"></labal>
             </div>
             <input type="checkbox" id="check">
             <label for="check" class="hamburger-btn">

@@ -18,8 +18,8 @@
 <header>
         <nav>
             <div class="logo-container">
-                <img src="Netland.jpg" class="logo">
-                <labal class="logo-txt">Netland</labal>
+                <img src="Pictures/Netland.jpg" class="logo">
+                <labal class="logo-txt"></labal>
             </div>
             <input type="checkbox" id="check">
             <label for="check" class="hamburger-btn">
@@ -43,14 +43,23 @@
             <table class="table table-hover" align="center" border="solid black 2px" width="300px" height="100px">
                 <thead>
                 <tbody align="center">
-                    <?php
-                        $username = "bit_academy";//username database
-                        include_once('connection.php');//connection to database
-                        $a = 1;
-                        $stmt = $conn->prepare("SELECT * FROM series WHERE id=" . $_GET['id']);//Takes the id from previous page to give right values
-                        $stmt->execute();
-                        $series = $stmt->fetchAll();
-                    foreach ($series as $serie) { ?>
+                <?php
+$username = "bit_academy"; // Gebruikersnaam database
+include_once('Database/connection.php'); // Verbinding maken met de database
+$a = 1;
+
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $serie_id = $_GET['id'];
+    
+    $stmt = $conn->prepare("SELECT * FROM series WHERE id = :serie_id");
+    $stmt->bindParam(':serie_id', $serie_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $series = $stmt->fetchAll();
+
+    foreach ($series as $serie) {
+       
+    }
+} else { } ?>
 
 <!--Start table info-->
 
@@ -91,7 +100,6 @@
 
                          <h3 align="center">Details<h3>
                         <p id="yellow"> <?php echo $serie['description']; ?> </p>
-                    <?php } ?><!--Closing foreach loop on line 53-->
                 <br>
     <form action="edit_serie.php" method="get">
         <input type="hidden" name="id" value="<?= $_GET['id'] ?>"><!--Makes it so when you go to editpage you get right id with it-->

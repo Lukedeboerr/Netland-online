@@ -18,7 +18,7 @@
 <header>
         <nav>
             <div class="logo-container">
-                <img src="Netland.jpg" class="logo">
+                <img src="Pictures/Netland.jpg" class="logo">
                 <labal class="logo-txt">Netland</labal>
             </div>
             <input type="checkbox" id="check">
@@ -38,9 +38,9 @@
 <!--Left side of pictures-->
 
 <div class="w3-content w3-section" style="max-width:500px">
-      <img class="mySlides" id="mySlides" src="Lucifer.jpg" style="width:20%">
-      <img class="mySlides" id="mySlides" src="penoza.jpg" style="width:20%">
-      <img class="mySlides" id="mySlides" src="breakingbad.jpg" style="width:20%">
+      <img class="mySlides" id="mySlides" src="Pictures/Lucifer.jpg" style="width:20%">
+      <img class="mySlides" id="mySlides" src="Pictures/penoza.jpg" style="width:20%">
+      <img class="mySlides" id="mySlides" src="Pictures/breakingbad.jpg" style="width:20%">
     </div>
 
 <!--End left side of pictures-->
@@ -48,9 +48,9 @@
 <!--Begin right side pictures-->
 
     <div class="w3-content w3-section" style="max-width:500px">
-      <img class="mySlides" id="mySlides2" src="cars.jpg" style="width:20%">
-      <img class="mySlides" id="mySlides2" src="johnwick.jpg" style="width:20%">
-      <img class="mySlides" id="mySlides2" src="dory.jpg" style="width:20%">
+      <img class="mySlides" id="mySlides2" src="Pictures/cars.jpg" style="width:20%">
+      <img class="mySlides" id="mySlides2" src="Pictures/johnwick.jpg" style="width:20%">
+      <img class="mySlides" id="mySlides2" src="Pictures/dory.jpg" style="width:20%">
     </div>
 
 <!--End right side of pictures-->
@@ -93,7 +93,7 @@
                 </thead>
                 <tbody align="center">
                 <?php 
-                           include_once('connection.php');//connection to database
+                           include_once('Database/connection.php');//connection to database
                            $a = 1;
                            $stmt = $conn->prepare(
                                $Selseries = "SELECT * FROM series"
@@ -131,7 +131,7 @@
                 <h2>Films</h2>
                 <tbody align="center">
                     <?php 
-                           include_once('connection.php');
+                           include_once('Database/connection.php');
                            $a = 1;
                            $stmt = $conn->prepare(
                                $SelFilms = "SELECT * FROM films"

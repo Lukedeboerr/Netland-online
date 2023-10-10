@@ -1,5 +1,5 @@
 <?php
-include_once('connection.php');//connection to database
+include_once('Database/connection.php'); // Verbinding maken met de database
 
 if (isset($_POST["titel"])) {
     $title = $_POST["titel"];
@@ -8,20 +8,25 @@ if (isset($_POST["titel"])) {
     $land = $_POST["land"];
     $description = $_POST["description"];
 
-//Start of sql statement to be able to insert new film
+    // Start van de SQL-query met prepared statement om een nieuwe film toe te voegen
 
     try {
-        $stmt = $conn->query("INSERT INTO films (titel, duur, datum, land, description)
-    VALUES ('$title', '$duur', '$datum', '$land', '$description')");//Inserting put in values in to database
+        $stmt = $conn->prepare("INSERT INTO films (titel, duur, datum, land, description) VALUES (:title, :duur, :datum, :land, :description)");
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':duur', $duur);
+        $stmt->bindParam(':datum', $datum);
+        $stmt->bindParam(':land', $land);
+        $stmt->bindParam(':description', $description);
+
+        $stmt->execute(); // Uitvoeren van het prepared statement
     } catch (PDOException $e) {
-        echo "Inserting records failed" . $e->getMessage();//If there was a error
+        echo "Het toevoegen van gegevens is mislukt: " . $e->getMessage(); // Als er een fout optreedt
     }
 
-//End of sql statement
+    // Einde van de SQL-query
 
 }
 ?>
-
 <!DOCTYPE html>
  <html lang="en">
 <head>
@@ -38,8 +43,8 @@ if (isset($_POST["titel"])) {
 <header>
         <nav>
             <div class="logo-container">
-                <img src="Netland.jpg" class="logo">
-                <labal class="logo-txt">Netland</labal>
+                <img src="Pictures/Netland.jpg" class="logo">
+                <labal class="logo-txt"></labal>
             </div>
             <input type="checkbox" id="check">
             <label for="check" class="hamburger-btn">

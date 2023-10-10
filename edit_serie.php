@@ -1,5 +1,6 @@
 <?php
-include_once('connection.php'); 
+include_once('Database/connection.php'); 
+
 $id = $_GET['id'] ?? $_POST['id'];
 if (!isset($_GET['id'])) {
     $id2 = $_POST['id'] - 1;
@@ -7,7 +8,7 @@ if (!isset($_GET['id'])) {
     $id2 = $_GET['id'] - 1;
 }
 
-//This php code is to get the id for later in the code
+// This PHP code is to get the ID for later in the code
 
 if (isset($_POST["id"])) {
     $title = $_POST["title"];
@@ -19,24 +20,33 @@ if (isset($_POST["id"])) {
     $language = $_POST["language"];
     try {
         $sql = "UPDATE series SET
-        title='$title',
-        rating='$rating',
-        description='$description',
-        has_won_awards='$awards',
-        seasons='$seasons',
-        country='$country',
-        language='$language'
-        WHERE id=$id";
+        title=:title,
+        rating=:rating,
+        description=:description,
+        has_won_awards=:awards,
+        seasons=:seasons,
+        country=:country,
+        language=:language
+        WHERE id=:id";
         $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':rating', $rating);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':awards', $awards);
+        $stmt->bindParam(':seasons', $seasons);
+        $stmt->bindParam(':country', $country);
+        $stmt->bindParam(':language', $language);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
 
-//This php code will make it possible to update the values directly to the database with the website
+    // This PHP code will make it possible to update the values directly in the database using the website
 
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,8 +63,8 @@ if (isset($_POST["id"])) {
 <header>
         <nav>
             <div class="logo-container">
-                <img src="Netland.jpg" class="logo">
-                <labal class="logo-txt">Netland</labal>
+                <img src="Pictures/Netland.jpg" class="logo">
+                <labal class="logo-txt"></labal>
             </div>
             <input type="checkbox" id="check">
             <label for="check" class="hamburger-btn">
